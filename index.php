@@ -1,72 +1,29 @@
+<?php   
+    require_once 'conexion.php'; //Conectamos el html con la bd mediante el archivo conexion.php
+
+    try{
+        $stmt = $pdo->prepare("SELECT id, titulo, descripcion, prioridad, estado, email_cliente FROM incidencias");
+        $stmt->execute();
+
+        $incidencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+
+        die("Error al recuperar las incidencias: " . $e->getMessage()); 
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>TaskShield</title>
 
-    <style>
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background-color: #4472C4;
-    color: white;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tr:hover {
-    background-color: #e6e6e6;
-}
-
-</style>
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 <body>
 
 <h1>Incidencias Activas</h1>
-
-<?php
-
-$incidencias = [
-    [
-        "id" => 1,
-        "titulo" => "Ordenador no enciende",
-        "descripcion" => "Pantalla negra al arrancar",
-        "prioridad" => "Alta",
-        "estado" => "Pendiente",
-        "email" => "cliente1@test.com"
-    ],
-    [
-        "id" => 2,
-        "titulo" => "Impresora atascada",
-        "descripcion" => "No imprime documentos",
-        "prioridad" => "Media",
-        "estado" => "En Proceso",
-        "email" => "cliente2@test.com"
-    ]
-];
-
-?>
 
 <table>
 
@@ -77,20 +34,32 @@ $incidencias = [
         <th>Prioridad</th>
         <th>Estado</th>
         <th>Email Cliente</th>
+        <th>Acciones</th>
     </tr>
 
-    <?php foreach ($incidencias as $incidencia): ?>
+    <?php if (empty($incidencias)): ?>
+        <tr>
+            <td colspan="7" id="incidencias"> no hay incidencias registradas </td>
+        </tr>
+    <?php else: ?>
+            <?php foreach ($incidencias as $incidencia): ?>
 
-    <tr>
-        <td><?= $incidencia["id"] ?></td>
-        <td><?= $incidencia["titulo"] ?></td>
-        <td><?= $incidencia["descripcion"] ?></td>
-        <td><?= $incidencia["prioridad"] ?></td>
-        <td><?= $incidencia["estado"] ?></td>
-        <td><?= $incidencia["email"] ?></td>
-    </tr>
+        <tr>
+            <td><?=htmlspecialchars($incidencia["id"]) ?></td>
+            <td><?=htmlspecialchars($incidencia["titulo"]) ?></td>
+            <td><?=htmlspecialchars($incidencia["descripcion"]) ?></td>
+            <td><?=htmlspecialchars($incidencia["prioridad"]) ?></td>
+            <td><?=htmlspecialchars($incidencia["estado"]) ?></td>
+            <td><?=htmlspecialchars($incidencia["email_cliente"]) ?></td>
+            <td>    
+                <!--Enlaces preparados para cuando hagamos la edición y el borrado-->
+                <a href="editar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-editar">Editar</a>
+                <a href="eliminar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-eliminar" onclick="return confirm('¿Estás seguro de eliminar esta incidencia?');">Eliminar></a>
+            </td>
+        </tr>
 
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
 </table>
 

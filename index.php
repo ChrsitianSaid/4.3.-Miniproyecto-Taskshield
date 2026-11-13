@@ -1,4 +1,5 @@
 <?php   
+    define('ACCESO_PERMITIDO', true);
     require_once 'conexion.php'; //Conectamos el html con la bd mediante el archivo conexion.php
 
     try{
@@ -52,7 +53,6 @@
             <td><?=htmlspecialchars($incidencia["estado"]) ?></td>
             <td><?=htmlspecialchars($incidencia["email_cliente"]) ?></td>
             <td>    
-                <!--Enlaces preparados para cuando hagamos la edición y el borrado-->
                 <a href="editar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-editar">Editar</a>
                 <a href="eliminar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-eliminar" onclick="return confirm('¿Estás seguro de eliminar esta incidencia?');">Eliminar></a>
             </td>

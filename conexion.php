@@ -3,6 +3,11 @@
     // conexion.php - Conexión segura con PDO
     require_once 'config.php';
 
+    //si no existe la constante que solo define el index.php, bloqueemos el acceso
+    if(!defined('ACCESO_PERMITIDO')) {
+        die("Acceso denegado");
+    }
+
     $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
 
     $options = [

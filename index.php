@@ -54,7 +54,7 @@
             <td><?=htmlspecialchars($incidencia["email_cliente"]) ?></td>
             <td>    
                 <a href="editar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-editar">Editar</a>
-                <a href="eliminar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-eliminar" onclick="return confirm('¿Estás seguro de eliminar esta incidencia?');">Eliminar></a>
+                <a href="eliminar_incidencia.php?id=<?= $incidencia["id"] ?>" class="btn-accion btn-eliminar" onclick="return confirm('¿Estás seguro de eliminar esta incidencia?');">Eliminar</a>
             </td>
         </tr>
 

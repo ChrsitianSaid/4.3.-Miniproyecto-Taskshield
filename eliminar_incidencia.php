@@ -23,7 +23,7 @@
             } 
 
         } catch(PDOException $e) {
-            die("Error al eliminar la incidencia: ") . $e->getMessage();
+            die("Error al eliminar la incidencia: " . $e->getMessage());
         }
         
     } else {

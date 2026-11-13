@@ -1,6 +1,8 @@
 <?php
+    define('ACCESO_PERMITIDO', true);
     //1 Conectamos con la base de datos
     require_once 'conexion.php';
+    
 
     //2. comprobamos si nos llega un ID válido por la URL
     if(isset($_GET['id'])){

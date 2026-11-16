@@ -80,7 +80,7 @@ docs/schema.sql
 6. Acceder desde el navegador a:
 
 ```text
-https://chrsitiansaid.github.io/4.3.-Miniproyecto-Taskshield/
+http://localhost/4.3.-Miniproyecto-Taskshield/
 ```
 
 ---

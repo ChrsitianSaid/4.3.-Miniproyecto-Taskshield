@@ -29,7 +29,7 @@
 <h1>Incidencias Activas</h1>
 <div style="margin-bottom: 20px">
     <a href="nueva_incidencia.php" class="btn-accion" style="padding: 8px 12px; background-color: #4472C4; color: white; text-decoration: none; border-radius: 4px;">Nueva Incidencia</a>
-    <a href="asignar_incidencia.php" class="btn-accion" style="padding: 8px 12px; background-color: #2e7d32; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px;">Asignar Avanzada</a>
+    <a href="asignar_incidencia.php" class="btn-accion" style="padding: 8px 12px; background-color: #2e7d32; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px;">Asignación Avanzada</a>
 </div>
 
 <table>

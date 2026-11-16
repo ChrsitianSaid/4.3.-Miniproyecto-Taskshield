@@ -31,7 +31,7 @@
                 // Obtener el ID generado automáticamente 
                 $nuevoId = $pdo->lastInsertId();
 
-                header("Location: index.php");
+                header("Location: index.php?id=" . $nuevoId);
                 exit;
 
             } catch (PDOException $e) {

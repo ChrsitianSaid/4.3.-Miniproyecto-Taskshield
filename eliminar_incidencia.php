@@ -6,7 +6,7 @@
 
     //2. comprobamos si nos llega un ID válido por la URL
     if(isset($_GET['id'])){
-        $id = $_GET['id'];
+        $id = filter_input(INPUT_GET,'id', FILTER_VALIDATE_INT);
 
         try {
             //3. Preparamos y ejecutamos la sentencia DELETE de forma segura

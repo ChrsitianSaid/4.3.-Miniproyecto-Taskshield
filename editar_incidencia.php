@@ -24,6 +24,7 @@
 
             // Si no existe ninguna incidencia con ese ID, se redirigira al index
             if (!$incidencia) {
+                $error = "La incidencia solicitada no existe.";
                 header("Location: index.php");
                 exit;
             }
@@ -35,17 +36,21 @@
 
     // 2. Comprueba si se ha enviado el formulario (es una peticion POST para actualizar)
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id = $_POST['id'];
-        $titulo = $_POST['titulo'];
-        $descripcion = $_POST['descripcion'];
-        $prioridad = $_POST['prioridad'];
-        $estado = $_POST['estado'];
-        $email_cliente = $_POST["email_cliente"];
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
+        $descripcion = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_SPECIAL_CHARS);
+        $prioridad = filter_input(INPUT_POST, 'prioridad', FILTER_UNSAFE_RAW);
+        $estado = filter_input(INPUT_POST, 'estado', FILTER_UNSAFE_RAW);
+        $email_cliente = filter_input(INPUT_POST, 'email_cliente', FILTER_VALIDATE_EMAIL);
 
         try {
             $sql = "UPDATE incidencias SET titulo = ?, descripcion = ?, prioridad = ?, estado = ?, email_cliente = ? WHERE id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$titulo, $descripcion, $prioridad, $estado, $email_cliente, $id]);
+
+            if ($stmt->rowCount() === 0) {
+                $error = "No se han realizado cambios en la incidencia.";
+            }
 
             // Redirigir de vuelta al panel principal con todo actualizado
             header("Location: index.php");

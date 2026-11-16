@@ -11,12 +11,15 @@ Verificar que el sistema valida correctamente el formato del correo electrónico
 - Prioridad: Alta
 - Email: correo_invalido
 
+
+
 ### Resultado esperado
 El sistema debe rechazar el formulario y mostrar un mensaje de error indicando que el correo electrónico no es válido.
 
 ### Resultado obtenido
 La incidencia no se registra y se muestra el mensaje de validación correspondiente.
 
+![alt text](image-1.png)
 ### Estado
 Correcto 
 
@@ -38,6 +41,9 @@ El sistema detecta que la incidencia no existe y redirige al usuario al panel pr
 ### Resultado obtenido
 La incidencia no se carga y el usuario es redirigido correctamente al panel principal.
 
+![alt text](image-2.png)
+
+![alt text](image-3.png)
 ### Estado
 Correcto 
 

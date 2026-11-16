@@ -14,7 +14,7 @@
     
     // 1. Comprueba si llega el ID por URL (petición GET para cargar el formulario)
     if (isset($_GET['id'])) {
-        $id = $_GET['id'];
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
         try {
             // Consulta que busca la incidencia por su ID
@@ -24,7 +24,6 @@
 
             // Si no existe ninguna incidencia con ese ID, se redirigira al index
             if (!$incidencia) {
-                $error = "La incidencia solicitada no existe.";
                 header("Location: index.php");
                 exit;
             }
@@ -39,8 +38,8 @@
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
         $descripcion = filter_input(INPUT_POST, 'descripcion', FILTER_SANITIZE_SPECIAL_CHARS);
-        $prioridad = filter_input(INPUT_POST, 'prioridad', FILTER_UNSAFE_RAW);
-        $estado = filter_input(INPUT_POST, 'estado', FILTER_UNSAFE_RAW);
+        $prioridad = filter_input(INPUT_POST, 'prioridad', FILTER_SANITIZE_SPECIAL_CHARS);
+        $estado = filter_input(INPUT_POST, 'estado', FILTER_SANITIZE_SPECIAL_CHARS);
         $email_cliente = filter_input(INPUT_POST, 'email_cliente', FILTER_VALIDATE_EMAIL);
 
         try {

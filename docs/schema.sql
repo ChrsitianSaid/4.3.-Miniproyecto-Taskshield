@@ -1,97 +1,105 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 13-11-2026 a las 13:23:17
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+
+-- TaskShield - Estructura de la base de datos
+-- Base de datos: soporte_db
+
+CREATE DATABASE IF NOT EXISTS soporte_db
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+USE soporte_db;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `soporte_db`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `incidencias`
---
-
-CREATE TABLE `incidencias` (
-  `id` int(11) NOT NULL,
-  `titulo` varchar(100) NOT NULL,
-  `descripcion` text NOT NULL,
-  `prioridad` varchar(50) NOT NULL,
-  `estado` varchar(50) NOT NULL,
-  `email_cliente` varchar(100) NOT NULL,
-  `id_tecnico` int(11) DEFAULT NULL,
-  `fecha_creacion` datetime DEFAULT NULL
+-- 1. Crear la tabla de técnicos
+CREATE TABLE IF NOT EXISTS tecnicos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    tareas_activas INT(11) DEFAULT 0,
+    PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `tecnicos`
---
-
-CREATE TABLE `tecnicos` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `tareas_activas` int(11) DEFAULT 0
+-- 2. Crear la tabla de incidencias
+CREATE TABLE IF NOT EXISTS incidencias (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    titulo VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    prioridad VARCHAR(50) NOT NULL,
+    estado VARCHAR(50) NOT NULL,
+    email_cliente VARCHAR(100) NOT NULL,
+    id_tecnico INT(11) DEFAULT NULL,
+    fecha_creacion DATETIME DEFAULT NULL,
+    PRIMARY KEY (id),
+    INDEX idx_id_tecnico (id_tecnico),
+    CONSTRAINT fk_incidencias_tecnicos
+        FOREIGN KEY (id_tecnico)
+        REFERENCES tecnicos(id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `tecnicos`
---
 
-INSERT INTO `tecnicos` (`id`, `nombre`, `email`, `tareas_activas`) VALUES
-(1, 'Pepe', 'jfzdiaz.3@gmail.com', 3),
-(2, 'Christian', 'csaidjm@gmail.com', 1);
+-- 3. Insertar técnicos de prueba si todavía no existen
+INSERT INTO tecnicos (nombre, email, tareas_activas)
+SELECT 'Pepe', 'pepe@example.com', 0
+WHERE NOT EXISTS (
+    SELECT 1 FROM tecnicos WHERE nombre = 'Pepe'
+);
 
---
--- Índices para tablas volcadas
---
+INSERT INTO tecnicos (nombre, email, tareas_activas)
+SELECT 'Christian', 'christian@example.com', 0
+WHERE NOT EXISTS (
+    SELECT 1 FROM tecnicos WHERE nombre = 'Christian'
+);
 
---
--- Indices de la tabla `incidencias`
---
-ALTER TABLE `incidencias`
-  ADD PRIMARY KEY (`id`);
 
---
--- Indices de la tabla `tecnicos`
---
-ALTER TABLE `tecnicos`
-  ADD PRIMARY KEY (`id`);
+-- 4. Insertar incidencias de prueba si todavía no existen
+INSERT INTO incidencias
+    (titulo, descripcion, prioridad, estado, email_cliente, fecha_creacion)
+SELECT
+    'Error al iniciar sesión',
+    'El cliente no puede acceder a su cuenta.',
+    'Alta',
+    'Pendiente',
+    'cliente1@example.com',
+    NOW()
+WHERE NOT EXISTS (
+    SELECT 1 FROM incidencias
+    WHERE titulo = 'Error al iniciar sesión'
+    AND email_cliente = 'cliente1@example.com'
+);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
 
---
--- AUTO_INCREMENT de la tabla `incidencias`
---
-ALTER TABLE `incidencias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+INSERT INTO incidencias
+    (titulo, descripcion, prioridad, estado, email_cliente, fecha_creacion)
+SELECT
+    'Problema con la impresora',
+    'La impresora no responde al enviar documentos.',
+    'Media',
+    'Pendiente',
+    'cliente2@example.com',
+    NOW()
+WHERE NOT EXISTS (
+    SELECT 1 FROM incidencias
+    WHERE titulo = 'Problema con la impresora'
+    AND email_cliente = 'cliente2@example.com'
+);
 
---
--- AUTO_INCREMENT de la tabla `tecnicos`
---
-ALTER TABLE `tecnicos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+INSERT INTO incidencias
+    (titulo, descripcion, prioridad, estado, email_cliente, fecha_creacion)
+SELECT
+    'Error en la plataforma',
+    'La página web muestra un error al cargar.',
+    'Baja',
+    'Pendiente',
+    'cliente3@example.com',
+    NOW()
+WHERE NOT EXISTS (
+    SELECT 1 FROM incidencias
+    WHERE titulo = 'Error en la plataforma'
+    AND email_cliente = 'cliente3@example.com'
+);

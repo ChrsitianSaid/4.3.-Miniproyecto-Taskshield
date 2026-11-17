@@ -113,7 +113,7 @@
 <body>
 
     <h1>Asignación Avanzada de Incidencias</h1>
-    <p style="text-align: center;">Módulo protegido mediante <strong>Transacciones PDO (beginTransaction / commit / rollBack)</strong></p>
+    
 
     <?php if (!empty($mensaje)): ?>
         <p style="text-align: center; font-weight: bold;">
